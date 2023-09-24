@@ -1,4 +1,4 @@
-name: feature-pipeline
+name: hourly-taxi-demand-feature-pipeline  #feature-pipeline
 
 on:
   schedule:
@@ -15,6 +15,7 @@ jobs:
 
   feature_pipeline:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout
       uses: actions/checkout@v3
@@ -46,9 +47,15 @@ jobs:
     
     - name: Install Dependencies
       run: poetry install
-        
-    - name: Run feature generation script
+
+      
+    - name: exceute python workflows from bash script
       env: 
         HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
-      run: make features
+      run: poetry run jupyter nbconvert --to notebook --execute notebooks/12_feature_pipeline.ipynb
+    
+    # - name: Run feature generation script
+    #   env: 
+    #     HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
+    #   run: make features
   
